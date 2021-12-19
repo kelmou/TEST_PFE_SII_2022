@@ -1,10 +1,17 @@
 package sii.maroc;
 
 public class Ticket {
+	 
+	private static int nombrePizza;
+    
+	public static int getNbOfPizzas() {
+		return nombrePizza;
+	}
 
 	public Ticket and(String string) {
-		// TODO Auto-generated method stub
-		return null;
+		Ticket ticket1 = new Ticket();
+		nombrePizza = Integer.parseInt(string.substring(0, 1));
+		return ticket1;
 	}
 
 }

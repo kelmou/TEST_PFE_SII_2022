@@ -1,8 +1,13 @@
 package sii.maroc;
 
+
+
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Assert;
 import org.junit.Test;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 /*recipe of Tomato Mozzarella Salad is
      *
@@ -22,17 +27,19 @@ public class RestaurantTest {
         Restaurant restaurant = new Restaurant("6 balls Mozzarella", "20 tomatoes", "olive oil", "pepper");
         Ticket ticket = restaurant.order("1 Tomato Mozzarella Salad");
         Meal meal = restaurant.retrieve(ticket);
-        assertThat(meal.servedDishes()).isEqualTo(1);
-        assertThat(meal.cookingDuration()).isEqualTo(6);
+        assertThat(meal.servedDishes(),is(1));
+        assertThat(meal.cookingDuration(),is(6));
+        
     }
 
     /**
      * write a test to ensure that when a recipe require out of stocks ingredients we receive an UnavailableDishException (unchecked)
      */
 // Allowed modification zone starts here
-    @Test
-    public void shouldFailWhenOutOfStock(){
-        Assert.fail();
+    @Test(expected=UnavailableDishException.class)
+    public void shouldFailWhenOutOfStock() throws UnavailableDishException {	
+        Restaurant restaurant = new Restaurant("6 balls Mozzarella", "20 tomatoes", "olive oil", "sea salt");
+        restaurant.isOutStock("8 Tomato Mozzarella Salad");
     }
 // Allowed modification zone ends here
 
@@ -49,8 +56,8 @@ public class RestaurantTest {
         Restaurant restaurant = new Restaurant("6 balls Mozzarella", "20 tomatoes", "olive oil", "sea salt");
         Ticket ticket = restaurant.order("4 Tomato Mozzarella Salad");
         Meal meal = restaurant.retrieve(ticket);
-        assertThat(meal.servedDishes()).isEqualTo(4);
-        assertThat(meal.cookingDuration()).isEqualTo(15);
+        assertThat(meal.servedDishes(),is(4));
+        assertThat(meal.cookingDuration(),is(15));
     }
 
 
@@ -73,11 +80,11 @@ public class RestaurantTest {
      */
     @Test
     public void shouldServeMixedOrders(){
-        Restaurant restaurant = new Restaurant("1Kg Flour", "50 tomatoes", "sea salt", "6 balls Mozzarella", "olive oil", "water");
+        Restaurant restaurant = new Restaurant("1Kg Flour", "50 tomatoes", "sea salt", "6 balls Mozzarella", "olive oil", " water");
         Ticket ticket = restaurant.order("3 Tomato Mozzarella Salad").and("2 Pizza");
         Meal meal = restaurant.retrieve(ticket);
-        assertThat(meal.servedDishes()).isEqualTo(5);
-        assertThat(meal.cookingDuration()).isEqualTo(27);
+        assertThat(meal.servedDishes(),is(5));
+        assertThat(meal.cookingDuration(),is(27));
     }
 
 }
